@@ -55,7 +55,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="/about-us"
+                  href="/about"
                   className="text-gray-700 hover:text-blue-500"
                 >
                   About Us
@@ -114,7 +114,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="/shipping-delivery"
+                  href="/shipping-information"
                   className="text-gray-700 hover:text-blue-500"
                 >
                   Shipping And Delivery
@@ -122,7 +122,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="/terms-conditions"
+                  href="/terms-condition"
                   className="text-gray-700 hover:text-blue-500"
                 >
                   Terms & Conditions
@@ -168,16 +168,16 @@ const Footer = () => {
           <Image src={etherium} alt="Ethereum" width={60} height={30} />
           <Image src={tether} alt="Tether" width={60} height={30} />
           <Image src={coinbase} alt="Coinbase" width={60} height={30} />
-          <Image src={bitcoin} alt="Bitcoin" width={80} height={30} />
-          <Image src={usd} alt="USDCoin" width={80} height={30} />
+          <Image src={bitcoin} alt="Bitcoin" width={60} height={30} />
+          <Image src={usd} alt="USDCoin" width={60} height={30} />
           <Image src={bank} alt="Bank Transfer" width={60} height={30} />
           <Image src={payoneer} alt="Payoneer" width={60} height={30} />
         </div>
 
         {/* Security Badges */}
         <div className="flex justify-center gap-8 mb-8">
-          <Image src={macfree} alt="McAfee Secure" width={80} height={40} />
-          <Image src={trust} alt="TrustedSite" width={80} height={40} />
+          <Image src={macfree} alt="McAfee Secure" width={60} height={40} />
+          <Image src={trust} alt="TrustedSite" width={60} height={40} />
         </div>
       </div>
 

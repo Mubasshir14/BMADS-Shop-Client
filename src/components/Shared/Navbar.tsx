@@ -12,10 +12,33 @@ import { LuLogIn } from "react-icons/lu";
 import Link from "next/link";
 import { BsTelegram } from "react-icons/bs";
 import { Button } from "../ui/button";
+import { useUser } from "../context/UserContext";
+import { logout } from "../services/Auth";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { LogOut } from "lucide-react";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  // const pathname = usePathname();
+  // const router = useRouter();
+  const { user, setIsLoading } = useUser();
+
+  const handleLogOut = () => {
+    logout();
+    setIsLoading(true);
+    // if (protectedRoutes.some((route) => pathname.match(route))) {
+    //   router.push("/");
+    // }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -70,18 +93,18 @@ const Navigation = () => {
     <>
       <nav
         className={`fixed top-0 left-0 right-0 transition-all duration-300 z-50 ${
-          scrolled ? "bg-blue-600 shadow-lg" : "bg-transparent"
+          scrolled ? "bg-blue-600 shadow-lg" : "bg-gradient-to-b from-blue-500 to-blue-500"
         }`}
       >
         <div className="container max-w-screen-xl mx-auto px-6 py-4 flex justify-between items-center">
           <div className="flex items-center">
             <div className="relative">
               {/* -rotate-12 */}
-              <div className="bg-blue-600 p-4 rounded-full transform  shadow-lg border-2 border-blue-400">
+              <Link href='/' className="bg-blue-600 p-4 rounded-full transform  shadow-lg border-2 border-blue-400">
                 <div className="text-white font-bold text-xl tracking-wider">
                   PROADS.SHOP
                 </div>
-              </div>
+              </Link>
               <div className="absolute -bottom-2 -right-2 bg-yellow-400 w-6 h-6 rounded-full"></div>
             </div>
           </div>
@@ -120,20 +143,93 @@ const Navigation = () => {
             </div>
           </div>
           <div className="hidden lg:flex items-center space-x-6">
-            <div className="flex space-x-4 ml-6">
-              <Button
-                className="bg-gray-200 hover:bg-blue-50 text-blue-600 px-5 py-2.5 rounded-lg flex items-center shadow-md transition-all hover:shadow-lg font-medium"
-                onClick={() => window.open("https://t.me/fbadsx", "_blank")}
-              >
-                <BsTelegram className="mr-2" />
-                Telegram
-              </Button>
+            {!user ? (
+              <>
+                <div className="flex space-x-4 ml-6">
+                  <Button
+                    className="bg-gray-200 hover:bg-blue-50 text-blue-600 px-5 py-2.5 rounded-lg flex items-center shadow-md transition-all hover:shadow-lg font-medium"
+                    onClick={() => window.open("https://t.me/fbadsx", "_blank")}
+                  >
+                    <BsTelegram className="mr-2" />
+                    Telegram
+                  </Button>
 
-              <Button className="bg-gray-200 hover:bg-blue-50 text-blue-600 px-5 py-2.5 rounded-lg flex items-center shadow-md transition-all hover:shadow-lg font-medium">
-                <LuLogIn className="mr-2" />
-                Sign in
-              </Button>
-            </div>
+                  <Link href="/login">
+                    <Button className="bg-gray-200 hover:bg-blue-50 text-blue-600 px-5 py-2.5 rounded-lg flex items-center shadow-md transition-all hover:shadow-lg font-medium">
+                      <LuLogIn className="mr-2" />
+                      Sign in
+                    </Button>
+                  </Link>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="flex space-x-4 ml-6">
+                  <Button
+                    className="bg-gray-200 hover:bg-blue-50 text-blue-600 px-5 py-2.5 rounded-lg flex items-center shadow-md transition-all hover:shadow-lg font-medium"
+                    onClick={() => window.open("https://t.me/fbadsx", "_blank")}
+                  >
+                    <BsTelegram className="mr-2" />
+                    Telegram
+                  </Button>
+
+                  {user && user.role === "admin" ? (
+                    <>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger>
+                          <Avatar>
+                            <AvatarImage src="https://github.com/shadcn.png" />
+                            <AvatarFallback>User</AvatarFallback>
+                          </Avatar>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem>
+                            <Link href="/profile">Profile</Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem>
+                            <Link href={`/dashboard/${user?.role}`}>
+                              Dashboard
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem
+                            className="cursor-pointer flex items-center gap-2"
+                            onClick={handleLogOut}
+                          >
+                            <LogOut />
+                            <span>Log Out</span>
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </>
+                  ) : (
+                    <>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger>
+                          <Avatar>
+                            <AvatarImage src="https://github.com/shadcn.png" />
+                            <AvatarFallback>User</AvatarFallback>
+                          </Avatar>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                          <DropdownMenuLabel>{user?.name}</DropdownMenuLabel>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem
+                            className="cursor-pointer flex items-center gap-2"
+                            onClick={handleLogOut}
+                          >
+                            <LogOut />
+                            <span>Log Out</span>
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </>
+                  )}
+                </div>
+              </>
+            )}
           </div>
           {/*  */}
 
@@ -203,19 +299,91 @@ const Navigation = () => {
               Blog
             </Link>
 
-            <div className="flex flex-col space-y-4 mt-6">
-              <Button
-                className="bg-white hover:bg-blue-50 text-blue-600 px-5 py-3 rounded-lg flex items-center justify-center shadow-md transition-all hover:shadow-lg font-medium"
-                onClick={() => window.open("https://t.me/fbadsx", "_blank")}
-              >
-                <BsTelegram className="mr-2" />
-                Telegram
-              </Button>
-              <Button className="bg-white hover:bg-blue-50 text-blue-600 px-5 py-3 rounded-lg flex items-center justify-center shadow-md transition-all hover:shadow-lg font-medium">
-                <LuLogIn className="mr-2" />
-                Sign in
-              </Button>
-            </div>
+            {!user ? (
+              <>
+                <div className="flex flex-col space-y-4 mt-6">
+                  <Button
+                    className="bg-white hover:bg-blue-50 text-blue-600 px-5 py-3 rounded-lg flex items-center justify-center shadow-md transition-all hover:shadow-lg font-medium"
+                    onClick={() => window.open("https://t.me/fbadsx", "_blank")}
+                  >
+                    <BsTelegram className="mr-2" />
+                    Telegram
+                  </Button>
+                  <Link href="/login">
+                    <Button className="bg-white hover:bg-blue-50 text-blue-600 px-5 py-3 rounded-lg flex items-center justify-center shadow-md transition-all hover:shadow-lg font-medium">
+                      <LuLogIn className="mr-2" />
+                      Sign in
+                    </Button>
+                  </Link>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="flex flex-col space-y-4 mt-6">
+                  <Button
+                    className="bg-white hover:bg-blue-50 text-blue-600 px-5 py-3 rounded-lg flex items-center justify-center shadow-md transition-all hover:shadow-lg font-medium"
+                    onClick={() => window.open("https://t.me/fbadsx", "_blank")}
+                  >
+                    <BsTelegram className="mr-2" />
+                    Telegram
+                  </Button>
+                  {user && user.role === "admin" ? (
+                    <>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger>
+                          <Avatar>
+                            <AvatarImage src="https://github.com/shadcn.png" />
+                            <AvatarFallback>User</AvatarFallback>
+                          </Avatar>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem>
+                            <Link href="/profile">Profile</Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem>
+                            <Link href={`/dashboard/${user?.role}`}>
+                              Dashboard
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem
+                            className="cursor-pointer flex items-center gap-2"
+                            onClick={handleLogOut}
+                          >
+                            <LogOut />
+                            <span>Log Out</span>
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </>
+                  ) : (
+                    <>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger>
+                          <Avatar>
+                            <AvatarImage src="https://github.com/shadcn.png" />
+                            <AvatarFallback>User</AvatarFallback>
+                          </Avatar>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                          <DropdownMenuLabel>{user?.name}</DropdownMenuLabel>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem
+                            className="cursor-pointer flex items-center gap-2"
+                            onClick={handleLogOut}
+                          >
+                            <LogOut />
+                            <span>Log Out</span>
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </>
+                  )}
+                </div>
+              </>
+            )}
           </div>
 
           <div className="mt-auto p-6 border-t border-blue-500">
