@@ -14,6 +14,7 @@ import bank from "../../assets/free-bank-transfer-circle-round-payment-method-ic
 import tether from "../../assets/tether-usdt-logo.png";
 
 const Footer = () => {
+  
   return (
     <footer className="border-t border-gray-200 py-8 bg-white">
       <div className="container max-w-screen-xl mx-auto px-4">
@@ -61,14 +62,7 @@ const Footer = () => {
                   About Us
                 </Link>
               </li>
-              <li>
-                <Link
-                  href="/recommendations"
-                  className="text-gray-700 hover:text-blue-500"
-                >
-                  Recommendations
-                </Link>
-              </li>
+              
             </ul>
           </div>
 
@@ -92,11 +86,7 @@ const Footer = () => {
                   How to buy?
                 </Link>
               </li>
-              <li>
-                <Link href="/faq" className="text-gray-700 hover:text-blue-500">
-                  FAQ
-                </Link>
-              </li>
+              
             </ul>
           </div>
 
@@ -112,14 +102,7 @@ const Footer = () => {
                   Privacy Policy
                 </Link>
               </li>
-              <li>
-                <Link
-                  href="/shipping-information"
-                  className="text-gray-700 hover:text-blue-500"
-                >
-                  Shipping And Delivery
-                </Link>
-              </li>
+             
               <li>
                 <Link
                   href="/terms-condition"
@@ -143,17 +126,10 @@ const Footer = () => {
                   Blog
                 </Link>
               </li>
+             
               <li>
                 <Link
-                  href="/my-purchases"
-                  className="text-gray-700 hover:text-blue-500"
-                >
-                  My Purchases
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/2fa-code-generator"
+                  href="/code-generator"
                   className="text-gray-700 hover:text-blue-500"
                 >
                   2FA Code Generator
@@ -191,26 +167,7 @@ const Footer = () => {
 
       {/* Shopping Cart */}
       <div className="fixed bottom-4 right-4">
-        <button className="bg-blue-500 text-white p-3 rounded-full relative">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <circle cx="9" cy="21" r="1"></circle>
-            <circle cx="20" cy="21" r="1"></circle>
-            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-          </svg>
-          <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-            0
-          </span>
-        </button>
+       
       </div>
       
     </footer>

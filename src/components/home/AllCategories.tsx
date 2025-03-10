@@ -1,15 +1,16 @@
+
 "use client";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from "react";
 import { getAllCategories } from "../services/Category";
 import Image from "next/image";
 
+
 const AllCategories = () => {
   const [categories, setCategories] = useState<any[]>([]);
-
   useEffect(() => {
     const fetchData = async () => {
-      const { data: fetchedCategories } = await getAllCategories();
+      const { data: fetchedCategories} = await getAllCategories();
       setCategories(fetchedCategories);
     };
 
@@ -25,6 +26,7 @@ const AllCategories = () => {
       });
     }
   };
+  
 
   return (
     <div className="max-w-screen-xl mx-auto px-5 mb-10">

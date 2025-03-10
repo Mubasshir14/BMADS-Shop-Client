@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import AllCategories from "@/components/home/AllCategories";
 import HeroSection from "@/components/home/HeroSection";
 import HomeTableData from "@/components/home/HomeTableData";

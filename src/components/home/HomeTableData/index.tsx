@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+// export const dynamic = "force-dynamic";
 
 import { useEffect, useState } from "react";
 import { getAllCategories } from "@/components/services/Category";
@@ -18,17 +19,22 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
 import { Tooltip } from "@/components/ui/tooltip";
-
-
+import { Loader2 } from "lucide-react";
+import { IProduct } from "@/components/types/product";
+import { addProduct } from "@/redux/features/cartSlice";
+import { useAppDispatch } from "@/redux/hooks";
+import { useUser } from "@/components/context/UserContext";
+import { toast } from "sonner";
+import CartModal from "@/components/Cart/CartModal";
 
 const HomeTableData = () => {
+  const [isCartModalOpen, setIsCartModalOpen] = useState(false);
   const [categories, setCategories] = useState<any[]>([]);
   const [products, setProducts] = useState<any[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
-
   const [openModal, setOpenModal] = useState(false);
-
-
+  const dispatch = useAppDispatch();
+  const { user } = useUser();
   useEffect(() => {
     const fetchData = async () => {
       const { data: fetchedCategories } = await getAllCategories();
@@ -51,15 +57,35 @@ const HomeTableData = () => {
     );
   };
 
-  const categoriesWithProducts = categories.filter((category: any) =>
+  const categoriesWithProducts = categories?.filter((category: any) =>
     products.some((product: any) => matchProductToCategory(product, category))
   );
 
+ 
+  const handleAddProduct = (product: IProduct) => {
+    const toastId = "creating";
+    if (user && user.role === "admin") {
+      toast.error("You are not allowed to add items to the cart.", {
+        id: toastId,
+      });
+      return;
+    }
+    dispatch(addProduct(product));
+    toast.success("Successfully added to cart!", {
+      id: toastId,
+    });
+
+    setIsCartModalOpen(true);
+  };
+
   return (
     <div className="max-w-screen-xl mx-auto p-4">
-      {categoriesWithProducts.length > 0 ? (
-        categoriesWithProducts.map((category: any) => {
-          const categoryProducts = products.filter((product: any) =>
+      <h1 className="text-2xl uppercase text-blue-500 font-bold text-center mb-4">
+        All Products
+      </h1>
+      {categoriesWithProducts?.length > 0 ? (
+        categoriesWithProducts?.map((category: any) => {
+          const categoryProducts = products?.filter((product: any) =>
             matchProductToCategory(product, category)
           );
 
@@ -71,7 +97,7 @@ const HomeTableData = () => {
             >
               <CardHeader className="bg-blue-500 text-white py-4 rounded-t-lg">
                 <CardTitle className="uppercase font-semibold text-center text-lg md:text-xl">
-                  {category.name}
+                  {category?.name}
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-4">
@@ -91,7 +117,7 @@ const HomeTableData = () => {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {categoryProducts.map((product: any) => (
+                      {categoryProducts?.map((product: any) => (
                         <TableRow
                           key={product._id}
                           className="border-b hover:bg-gray-50 transition"
@@ -99,8 +125,8 @@ const HomeTableData = () => {
                           <TableCell className="p-3 text-center">
                             {product.imageUrls?.length > 0 ? (
                               <Image
-                                src={product.imageUrls[0]}
-                                alt={product.name}
+                                src={product?.imageUrls[0]}
+                                alt={product?.name}
                                 width={40}
                                 height={40}
                                 className="rounded-md object-cover w-10 h-10"
@@ -113,17 +139,15 @@ const HomeTableData = () => {
                             className="p-3 text-sm md:text-base font-medium cursor-pointer"
                             onClick={() => setSelectedProduct(product)}
                           >
-                           
                             <Tooltip>
                               <Dialog>
                                 <DialogTrigger asChild>
                                   <div
-                                   
                                     onClick={() => setSelectedProduct(product)}
                                   >
-                                     <div className="max-w-xs truncate">
-                              {product.name}
-                            </div>
+                                    <div className="max-w-xs truncate">
+                                      {product?.name}
+                                    </div>
                                   </div>
                                 </DialogTrigger>
                                 {selectedProduct && (
@@ -145,15 +169,15 @@ const HomeTableData = () => {
                                       </p>
                                       <p className="text-gray-600">
                                         <strong>Stock:</strong>{" "}
-                                        {selectedProduct.stock}
+                                        {selectedProduct?.stock}
                                       </p>
                                       <p className="text-gray-600">
                                         <strong>Price:</strong> $
-                                        {selectedProduct.price}
+                                        {selectedProduct?.price}
                                       </p>
                                       <p className="text-gray-700 mt-2 text-justify">
                                         <strong>Description:</strong>{" "}
-                                        {selectedProduct.description}
+                                        {selectedProduct?.description}
                                       </p>
                                     </div>
                                   </DialogContent>
@@ -161,17 +185,18 @@ const HomeTableData = () => {
                               </Dialog>
                             </Tooltip>
                             <div className="sm:hidden text-xs text-gray-500">
-                              Stock: {product.stock}
+                              Stock: {product?.stock}
                             </div>
                           </TableCell>
                           <TableCell className="p-3 text-center text-sm md:text-base font-semibold">
-                            ${product.price}
+                            ${product?.price}
                           </TableCell>
                           <TableCell className="p-3 text-center hidden sm:table-cell text-gray-700">
                             {product.stock}
                           </TableCell>
                           <TableCell className="p-3 text-center">
                             <Button
+                              onClick={() => handleAddProduct(product)}
                               variant="default"
                               size="sm"
                               className={`text-xs px-3 py-1 md:px-4 md:py-2 ${
@@ -179,13 +204,11 @@ const HomeTableData = () => {
                                   ? "bg-gray-400 cursor-not-allowed"
                                   : "bg-blue-500 hover:bg-blue-600"
                               }`}
-                              disabled={product.stock === 0}
+                              disabled={product?.stock === 0}
                             >
-                              {product.stock === 0 ? "Out" : "Buy"}
+                              {product.stock === 0 ? "Stock Out" : "Buy"}
                             </Button>
                           </TableCell>
-                        
-                          
                         </TableRow>
                       ))}
                     </TableBody>
@@ -200,6 +223,11 @@ const HomeTableData = () => {
           No categories with products found
         </p>
       )}
+
+      <CartModal
+        isOpen={isCartModalOpen}
+        onClose={() => setIsCartModalOpen(false)}
+      />
     </div>
   );
 };

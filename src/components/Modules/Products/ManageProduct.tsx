@@ -97,7 +97,7 @@ const ManageProduct = () => {
   };
 
   return (
-    <div className="p-6 bg-gradient-to-r from-green-100 to-blue-50 rounded-lg shadow-lg">
+    <div className="p-6  rounded-lg shadow-lg">
       <h1 className="text-blue-500 text-xl font-bold mb-3 text-center">
         Manage Products
       </h1>

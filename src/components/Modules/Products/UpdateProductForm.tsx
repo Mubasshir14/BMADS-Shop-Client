@@ -39,12 +39,15 @@ const UpdateProductForm = ({ product }: { product: any }) => {
     defaultValues: {
       name: product?.name || "",
       price: product?.price || "",
-      category: product?.category || "",
+      category: product?.category?.name || "",
       stock: product?.stock || "",
       description: product?.description || "",
     },
   });
-
+ 
+  useEffect(() => {
+    console.log(form.getValues()); // Logs the current default values
+  }, [form]);
   const {
     formState: { isSubmitting },
   } = form;
@@ -149,7 +152,7 @@ const UpdateProductForm = ({ product }: { product: any }) => {
                   <FormLabel className="text-blue-400">Category</FormLabel>
                   <Select
                     onValueChange={field.onChange}
-                    value={field.value || ""}
+                    value={field.value}
                     defaultValue={field.value}
                   >
                     <FormControl>

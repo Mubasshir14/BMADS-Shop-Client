@@ -24,20 +24,24 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { LogOut } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { protectedRoutes } from "@/constants";
+
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  // const pathname = usePathname();
-  // const router = useRouter();
+
+  const pathname = usePathname();
+  const router = useRouter();
   const { user, setIsLoading } = useUser();
 
   const handleLogOut = () => {
     logout();
     setIsLoading(true);
-    // if (protectedRoutes.some((route) => pathname.match(route))) {
-    //   router.push("/");
-    // }
+    if (protectedRoutes.some((route) => pathname.match(route))) {
+      router.push("/");
+    }
   };
 
   useEffect(() => {
@@ -93,18 +97,23 @@ const Navigation = () => {
     <>
       <nav
         className={`fixed top-0 left-0 right-0 transition-all duration-300 z-50 ${
-          scrolled ? "bg-blue-600 shadow-lg" : "bg-gradient-to-b from-blue-500 to-blue-500"
+          scrolled
+            ? "bg-blue-600 shadow-lg"
+            : "bg-gradient-to-b from-blue-500 to-blue-600"
         }`}
       >
         <div className="container max-w-screen-xl mx-auto px-6 py-4 flex justify-between items-center">
           <div className="flex items-center">
             <div className="relative">
               {/* -rotate-12 */}
-              <Link href='/' className="bg-blue-600 p-4 rounded-full transform  shadow-lg border-2 border-blue-400">
-                <div className="text-white font-bold text-xl tracking-wider">
+              <div
+                onClick={() => router.push("/")}
+                className="bg-blue-600 cursor-pointer p-4 rounded-full transform  shadow-lg border-2 border-blue-400"
+              >
+                <div className="text-white font-bold text-xl tracking-wider cursor-pointer">
                   PROADS.SHOP
                 </div>
-              </Link>
+              </div>
               <div className="absolute -bottom-2 -right-2 bg-yellow-400 w-6 h-6 rounded-full"></div>
             </div>
           </div>
@@ -250,7 +259,6 @@ const Navigation = () => {
         }`}
       >
         <div className="flex flex-col h-full overflow-y-auto">
-          {/* Close Button */}
           <div className="flex justify-end p-4">
             <button
               className="text-white p-2 focus:outline-none"
@@ -411,7 +419,6 @@ const Navigation = () => {
         </div>
       </div>
 
-      {/* Overlay when mobile menu is open */}
       {isOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300"

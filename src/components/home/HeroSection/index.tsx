@@ -1,10 +1,20 @@
+"use client";
 /* eslint-disable react/no-unescaped-entities */
 import Navigation from "@/components/Shared/Navbar";
 import Image from "next/image";
 import { FaBolt, FaHeadset, FaShieldAlt } from "react-icons/fa";
 import img from "../../../assets/wrongtakeauto.png";
+import { useAppSelector } from "@/redux/hooks";
+import { orderSelector } from "@/redux/features/cartSlice";
+import CartModal from "@/components/Cart/CartModal";
+import { useState } from "react";
 
 const HeroSection = () => {
+  const [isCartModalOpen, setIsCartModalOpen] = useState(false);
+  const order = useAppSelector(orderSelector);
+  const openModal = () => {
+    setIsCartModalOpen(true);
+  };
   return (
     <div className="bg-gradient-to-b from-blue-500 to-blue-600 min-h-screen relative overflow-hidden ">
       <Navigation />
@@ -115,53 +125,41 @@ const HeroSection = () => {
                 </div>
               </div>
             </div>
-
-            {/* <div className="absolute top-40 md:top-48 -left-16 z-0 w-24 h-24 md:w-32 md:h-32 animate-pulse" style={{animationDuration: '4s'}}>
-                <div className="absolute inset-0 bg-orange-400 blur-md opacity-30 rounded-2xl"></div>
-                <div className="bg-gradient-to-br from-blue-300 to--500 rounded-2xl w-full h-full flex items-center justify-center transform rotate-12 shadow-lg border-2 border-orange-300/30">
-                  <svg className="w-12 h-12 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M14 6L8 12L14 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                  <Image src={img} width={600} height={600} alt='image-mane' />
-                </div>
-              </div>
-               */}
-
-            {/* <div className="absolute top-16 -left-8 z-5 w-16 h-16 md:w-20 md:h-20 animate-bounce" style={{animationDuration: '5s'}}>
-                <div className="absolute inset-0 bg-gray-700 blur-md opacity-30 rounded-xl"></div>
-                <div className="bg-gradient-to-br from-gray-600 to-gray-800 rounded-xl w-full h-full flex items-center justify-center shadow-lg border-2 border-gray-600/30">
-                  <svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" strokeWidth="2"/>
-                    <path d="M8 11L10 13L16 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
-              </div> */}
           </div>
         </div>
       </div>
 
-      {/* <div className="fixed bottom-6 left-6 z-30">
-          <button className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-5 py-2.5 rounded-full flex items-center shadow-lg hover:shadow-xl transition-all hover:transform hover:scale-105">
-            <span className="relative">
-              <FaHeadset className="mr-2" />
-              <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-red-500 animate-ping"></span>
-              <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-red-500"></span>
-            </span>
-            Support
-          </button>
-        </div> */}
-
       {/* Shopping Cart - Fixed */}
-      {/* <div className="fixed bottom-6 right-6 z-30">
-          <button className="bg-gradient-to-r from-blue-500 to-blue-600 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all hover:transform hover:scale-105">
-            <span className="relative">
-              <FaShoppingCart className="text-xl" />
-              <span className="absolute -top-1 -right-1 bg-white text-blue-600 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold border-2 border-blue-500">
-                0
-              </span>
-            </span>
-          </button>
-        </div> */}
+      <div className="fixed bottom-6 right-6 z-30">
+        <button
+          onClick={openModal}
+          className="bg-blue-500 text-white p-3 rounded-full relative"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+            {order?.products?.length || 0}
+          </span>
+        </button>
+      </div>
+
+      <CartModal
+        isOpen={isCartModalOpen}
+        onClose={() => setIsCartModalOpen(false)} 
+      />
     </div>
   );
 };
