@@ -27,7 +27,6 @@ import { LogOut } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { protectedRoutes } from "@/constants";
 
-
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -111,7 +110,7 @@ const Navigation = () => {
                 className="bg-blue-600 cursor-pointer p-4 rounded-full transform  shadow-lg border-2 border-blue-400"
               >
                 <div className="text-white font-bold text-xl tracking-wider cursor-pointer">
-                  PROADS.SHOP
+                  BDMADS
                 </div>
               </div>
               <div className="absolute -bottom-2 -right-2 bg-yellow-400 w-6 h-6 rounded-full"></div>
@@ -274,7 +273,7 @@ const Navigation = () => {
                 {/* -rotate-12 */}
                 <div className="bg-blue-700 p-4 rounded-full transform  shadow-lg border-2 border-blue-400">
                   <div className="text-white font-bold text-xl tracking-wider">
-                    PROADS.SHOP
+                    BDMADS
                   </div>
                 </div>
                 <div className="absolute -bottom-2 -right-2 bg-yellow-400 w-6 h-6 rounded-full"></div>

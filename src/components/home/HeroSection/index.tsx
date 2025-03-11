@@ -112,7 +112,7 @@ const HeroSection = () => {
           <div className="relative">
             <div className="relative z-10  transition-transform hover:transform hover:scale-105 duration-300">
               <div className="absolute inset-0 bg-blue-400 rounded-3xl blur-xl opacity-20"></div>
-              <div className="rounded-3xl w-full h-full flex items-center justify-center  ">
+              <div className="rounded-3xl w-full h-full flex items-center justify-center  md:px-0 px-2">
                 <div className="relative">
                   <Image src={img} width={500} height={500} alt="image-mane" />
 
@@ -129,7 +129,7 @@ const HeroSection = () => {
         </div>
       </div>
 
-      {/* Shopping Cart - Fixed */}
+
       <div className="fixed bottom-6 right-6 z-30">
         <button
           onClick={openModal}

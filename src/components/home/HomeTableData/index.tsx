@@ -61,7 +61,6 @@ const HomeTableData = () => {
     products.some((product: any) => matchProductToCategory(product, category))
   );
 
- 
   const handleAddProduct = (product: IProduct) => {
     const toastId = "creating";
     if (user && user.role === "admin") {
@@ -76,6 +75,24 @@ const HomeTableData = () => {
     });
 
     setIsCartModalOpen(true);
+  };
+
+  const formatText = (text: any, charLimit = 50) => {
+    if (!text) return "";
+    const words = text.split(" ");
+    let formattedText = "";
+    let lineLength = 0;
+
+    words.forEach((word: any) => {
+      if (lineLength + word.length > charLimit) {
+        formattedText += "\n"; // নতুন লাইন
+        lineLength = 0;
+      }
+      formattedText += word + " ";
+      lineLength += word.length + 1;
+    });
+
+    return formattedText.trim();
   };
 
   return (
@@ -145,8 +162,8 @@ const HomeTableData = () => {
                                   <div
                                     onClick={() => setSelectedProduct(product)}
                                   >
-                                    <div className="max-w-xs truncate">
-                                      {product?.name}
+                                    <div className=" whitespace-pre-wrap break-words text-justify">
+                                      {formatText(product?.name, 80)}
                                     </div>
                                   </div>
                                 </DialogTrigger>

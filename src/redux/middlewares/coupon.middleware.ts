@@ -27,7 +27,6 @@ export const couponMiddleware =
         fetchCoupon({
           couponCode: state.cart.coupon.code,
           subTotal: subTotal,
-          productId: state.cart.productId,
         }) as unknown as Action
       );
     } else {

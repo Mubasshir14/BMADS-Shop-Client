@@ -10,14 +10,12 @@ import { toast } from "sonner";
 import {
   couponSelector,
   fetchCoupon,
-  productSelector,
   subTotalSelector,
 } from "@/redux/features/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
 export default function Coupon() {
   const subTotal = useAppSelector(subTotalSelector);
-  const productId = useAppSelector(productSelector);
   const { isLoading, code } = useAppSelector(couponSelector);
   const dispatch = useAppDispatch();
   const form = useForm();
@@ -27,34 +25,46 @@ export default function Coupon() {
   };
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const toastId = "creating";
+    console.log({ couponCode: data.coupon, subTotal });
     try {
       const res: any = await dispatch(
-        fetchCoupon({ couponCode: data.coupon, subTotal, productId }) as any
+        fetchCoupon({ couponCode: data.coupon, subTotal }) as any
       ).unwrap();
-      console.log(res, "inside component");
+      if (res.success) {
+        toast.success(res.message, {
+          id: toastId,
+        });
+      } else {
+        toast.error(res.error.message, {
+          id: toastId,
+        });
+      }
     } catch (error: any) {
       console.log(error);
-      toast.error(error.message);
+      toast.error("Invalid Coupon Code", {
+        id: toastId,
+      });
     }
   };
 
   return (
     <div className="border-2 border-white bg-background brightness-105 rounded-md col-span-4 ">
-      <div className="flex flex-col justify-between h-full">
-        <h1 className="text-xl font-bold uppercase text-blue-500">
-          Use Coupon code
-        </h1>
+      <div className="flex flex-row items-center justify-between gap-x-2 w-full">
         <Form {...form}>
-          <form className="mt-3" onSubmit={form.handleSubmit(onSubmit)}>
+          <form
+            className="flex flex-row items-center gap-2 w-full"
+            onSubmit={form.handleSubmit(onSubmit)}
+          >
             <FormField
               control={form.control}
               name="coupon"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="w-full">
                   <FormControl>
                     <Input
                       {...field}
-                      className=" border-blue-500"
+                      className="border-blue-500 text-sm py-1 w-full"
                       placeholder="Coupon code"
                       value={field.value || code}
                     />
@@ -62,24 +72,22 @@ export default function Coupon() {
                 </FormItem>
               )}
             />
-            <div className="flex gap-2 mt-2">
+            <Button
+              disabled={!couponInput}
+              type="submit"
+              className="bg-blue-500 text-sm"
+            >
+              {isLoading ? "Applying..." : "Apply"}
+            </Button>
+            {couponInput && (
               <Button
-                disabled={!couponInput}
-                type="submit"
-                className="w-full bg-blue-500 text-xl font-semibold py-5 "
+                onClick={handleRemoveCoupon}
+                variant="outline"
+                className="bg-red-100 p-1 rounded-full size-10"
               >
-                {isLoading ? "Applying..." : "Apply"}
+                <Trash size={20} className="text-red-500" />
               </Button>
-              {couponInput && (
-                <Button
-                  onClick={handleRemoveCoupon}
-                  variant="outline"
-                  className="bg-red-100 rounded-full size-10"
-                >
-                  <Trash size={24} className="text-red-500" />
-                </Button>
-              )}
-            </div>
+            )}
           </form>
         </Form>
       </div>

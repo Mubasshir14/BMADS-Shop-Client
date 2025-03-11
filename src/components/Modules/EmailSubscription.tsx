@@ -22,7 +22,7 @@ const EmailSubscription = () => {
         <div className="flex flex-col md:flex-row items-center justify-between">
           <div className="mb-6 md:mb-0 md:w-1/2">
             <h2 className="text-2xl font-bold text-blue-900 mb-2">
-              Get updates and special offers from PROADS.SHOP
+              Get updates and special offers from BDMADS
             </h2>
             <p className="text-blue-700">
               Don't want to miss any of our updates? then join our email list.
@@ -65,7 +65,9 @@ const EmailSubscription = () => {
 
           <div className="flex items-center md:w-1/3">
             <Link
-            passHref target="_blank" rel="noopener noreferrer"
+              passHref
+              target="_blank"
+              rel="noopener noreferrer"
               href="https://t.me/fbadsx"
               className="bg-blue-500 p-4 rounded-lg"
             >

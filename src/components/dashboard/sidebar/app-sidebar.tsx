@@ -40,10 +40,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 title: "Add Product",
                 url: "/dashboard/admin/product/add-product",
               },
-              {
-                title: "Manage Order",
-                url: "/dashboard/admin/order/manage-order",
-              },
             ],
           },
           {
@@ -73,6 +69,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               {
                 title: "Add Coupon",
                 url: "/dashboard/admin/coupon/add-coupon",
+              },
+            ],
+          },
+          {
+            title: "Order",
+            url: "/dashboard/admin/order/manage-order",
+            icon: Bot,
+            items: [
+              {
+                title: "Manage Order",
+                url: "/dashboard/admin/order/manage-order",
               },
             ],
           },
@@ -107,7 +114,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     <Link href="/" className=" text-2xl font-bold">
                       <div className="bg-blue-600 py-2  rounded-full shadow-lg border-2 border-blue-400">
                         <div className="text-white font-bold text-xl tracking-wider text-center">
-                          PROADS.SHOP
+                          BDMADS
                         </div>
                       </div>
                     </Link>

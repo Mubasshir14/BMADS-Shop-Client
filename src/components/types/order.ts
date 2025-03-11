@@ -7,6 +7,7 @@ export interface IOrder {
 export interface IOrderProduct {
   product: string;
   quantity: number;
+  name: string;
 }
 
 export interface ICoupon {

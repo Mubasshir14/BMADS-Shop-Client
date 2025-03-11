@@ -14,7 +14,6 @@ import bank from "../../assets/free-bank-transfer-circle-round-payment-method-ic
 import tether from "../../assets/tether-usdt-logo.png";
 
 const Footer = () => {
-  
   return (
     <footer className="border-t border-gray-200 py-8 bg-white">
       <div className="container max-w-screen-xl mx-auto px-4">
@@ -23,21 +22,24 @@ const Footer = () => {
           <div>
             {/* Logo and Copyright */}
             <div className="mb-6">
-              <h1 className="lg:text-3xl text-lg font-bold mb-2">PROADS.SHOP</h1>
-              
+              <h1 className="lg:text-3xl text-lg font-bold mb-2">BDMADS</h1>
             </div>
 
             {/* Social Media Icons */}
             <div className="flex mb-8 space-x-4">
               <Link
-              passHref target="_blank" rel="noopener noreferrer"
+                passHref
+                target="_blank"
+                rel="noopener noreferrer"
                 href="https://t.me/fbadsx"
                 className="text-blue-500 p-2 rounded-full"
               >
                 <BsTelegram className="text-4xl" />
               </Link>
               <Link
-              passHref target="_blank" rel="noopener noreferrer"
+                passHref
+                target="_blank"
+                rel="noopener noreferrer"
                 href="https://wa.me/447462481875"
                 className="text-green-500 p-2 rounded-full"
               >
@@ -62,7 +64,6 @@ const Footer = () => {
                   About Us
                 </Link>
               </li>
-              
             </ul>
           </div>
 
@@ -86,7 +87,6 @@ const Footer = () => {
                   How to buy?
                 </Link>
               </li>
-              
             </ul>
           </div>
 
@@ -102,7 +102,7 @@ const Footer = () => {
                   Privacy Policy
                 </Link>
               </li>
-             
+
               <li>
                 <Link
                   href="/terms-condition"
@@ -126,7 +126,7 @@ const Footer = () => {
                   Blog
                 </Link>
               </li>
-             
+
               <li>
                 <Link
                   href="/code-generator"
@@ -166,10 +166,7 @@ const Footer = () => {
       </div>
 
       {/* Shopping Cart */}
-      <div className="fixed bottom-4 right-4">
-       
-      </div>
-      
+      <div className="fixed bottom-4 right-4"></div>
     </footer>
   );
 };

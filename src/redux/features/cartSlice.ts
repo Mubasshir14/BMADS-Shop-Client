@@ -12,6 +12,7 @@ interface InitialState {
   products: CartProduct[];
   email: string;
   productId: string;
+  name: string;
   coupon: {
     code: string;
     discountAmount: number;
@@ -24,6 +25,7 @@ const initialState: InitialState = {
   products: [],
   email: "",
   productId: "",
+  name: "",
   coupon: {
     code: "",
     discountAmount: 0,
@@ -37,15 +39,12 @@ export const fetchCoupon = createAsyncThunk(
   async ({
     couponCode,
     subTotal,
-    productId,
   }: {
     couponCode: string;
     subTotal: number;
-    productId: string;
   }) => {
     try {
-      const res = await addCoupon(couponCode, subTotal, productId);
-
+      const res = await addCoupon(couponCode, subTotal);
       if (!res.success) {
         throw new Error(res.message);
       }
@@ -76,7 +75,11 @@ const cartSlice = createSlice({
         return;
       }
 
-      state.products.push({ ...action.payload, orderQuantity: 1 });
+      state.products.push({
+        ...action.payload,
+        name: action.payload.name,
+        orderQuantity: 1,
+      });
     },
     incrementOrderQuantity: (state, action) => {
       const productToIncrement = state.products.find(
@@ -141,6 +144,7 @@ export const orderSelector = (state: RootState) => {
   return {
     products: state.cart.products.map((product) => ({
       product: product._id,
+      name: product.name,
       quantity: product.orderQuantity,
     })),
   };
@@ -179,6 +183,8 @@ export const discountAmountSelector = (state: RootState) => {
 export const emailSelector = (state: RootState) => {
   return state.cart.email;
 };
+
+// const selectName = (state: RootState) => state.cart.name || "";
 
 export const {
   addProduct,

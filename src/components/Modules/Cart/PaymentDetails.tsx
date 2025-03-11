@@ -14,6 +14,7 @@ import {
 } from "@/redux/features/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useRouter } from "next/navigation";
+import { ScaleLoader } from "react-spinners";
 import { toast } from "sonner";
 
 export default function PaymentDetails() {
@@ -43,20 +44,24 @@ export default function PaymentDetails() {
       let orderData;
 
       if (coupon.code) {
-        orderData = { ...order, coupon: coupon.code };
+        orderData = { ...order, email, coupon: coupon.code };
+        console.log(orderData);
       } else {
-        orderData = order;
+        orderData = { ...order, email };
       }
-
+      console.log(orderData);
       const res = await createOrder(orderData as any);
-
+      console.log(res);
       if (res.success) {
         toast.success(res.message, { id: orderLoading });
         dispatch(clearCart());
-        router.push(res.data.paymentUrl);
+
+        console.log("Redirecting to:", res.data.data.paymentUrl);
+        router.push(res.data.data.paymentUrl);
+
       }
 
-      if (!res.success) {
+      if (!res.error) {
         toast.error(res.message, { id: orderLoading });
       }
     } catch (error: any) {
@@ -65,32 +70,38 @@ export default function PaymentDetails() {
   };
 
   return (
-    <div className="border-2 border-blue-100 bg-background brightness-105 rounded-md col-span-4 h-fit p-5">
-      <h1 className="text-xl font-bold text-blue-500 uppercase">
+    <div className="border-2 border-blue-100 bg-background brightness-105 rounded-md col-span-4 h-fit px-5">
+      <h1 className="text-lg font-bold text-blue-500 uppercase">
         Payment Details
       </h1>
-      {coupon.isLoading && <div>Loading...</div>}
+      {coupon.isLoading && (
+        <div className="flex items-center justify-center">
+          <ScaleLoader color="#4ADABD" />
+        </div>
+      )}
       {!coupon.isLoading && (
         <>
-          <div className="space-y-2 mt-4">
+          <div className="space-y-2 ">
             <div className="flex justify-between">
-              <p className="text-gray-500 ">Subtotal</p>
-              <p className="font-semibold">{subTotal}</p>
+              <p className="text-gray-500 text-sm">Subtotal</p>
+              <p className="font-semibold text-sm">{subTotal.toFixed(2)}</p>
             </div>
             <div className="flex justify-between">
-              <p className="text-gray-500 ">Discount</p>
-              <p className="font-semibold">{discountAmount}</p>
+              <p className="text-gray-500 text-sm">Discount</p>
+              <p className="font-semibold text-sm">
+                {discountAmount.toFixed(2)}
+              </p>
             </div>
           </div>
-          <div className="flex justify-between mt-10 mb-5">
-            <p className="text-gray-500 ">Grand Total</p>
-            <p className="font-semibold">{grandTotal}</p>
+          <div className="flex justify-between mb-5">
+            <p className="text-gray-500 text-sm">Grand Total</p>
+            <p className="font-semibold text-sm">{grandTotal.toFixed(2)}</p>
           </div>
         </>
       )}
       <Button
         onClick={handleOrder}
-        className="w-full bg-blue-500 text-xl font-semibold py-5"
+        className="w-full bg-blue-500 text-sm   font-semibold mb-2"
       >
         Order Now
       </Button>
