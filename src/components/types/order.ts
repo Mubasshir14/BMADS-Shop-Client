@@ -2,7 +2,7 @@ export interface IOrder {
   products: IOrderProduct[];
   coupon?: string;
   email: string;
-  orderId?: string;
+  orderId: string;
 }
 
 export interface IOrderProduct {

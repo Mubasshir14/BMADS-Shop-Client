@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// "use client";
+"use client";
 import { createOrder } from "@/components/services/Coupon";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,6 +25,7 @@ export default function PaymentDetails() {
   const cartProducts = useAppSelector(orderedProductsSelector);
   const coupon = useAppSelector(couponSelector);
 
+
   const dispatch = useAppDispatch();
 
   const handleOrder = async () => {
@@ -37,41 +38,43 @@ export default function PaymentDetails() {
       if (cartProducts.length === 0) {
         throw new Error("Cart is empty, what are you trying to order ??");
       }
-      const orderId = Math.random().toString(36).substring(6);
+
       let orderData;
 
       if (coupon.code) {
+       
         orderData = {
           ...order,
           email,
           coupon: coupon.code,
-          orderId,
+          orderId: Math.random().toString(36).substring(6),
         };
+        console.log(orderData);
       } else {
+      
         orderData = {
           ...order,
           email,
-          orderId,
+          orderId: Math.random().toString(36).substring(7),
         };
       }
+      console.log(orderData);
+      console.log(orderData.products);
       const res = await createOrder(orderData as any);
-      console.log(res);
+      console.log('asdfgh', res);
       if (res.success) {
-        console.log(res.success.message);
         toast.success(res.message, { id: orderLoading });
         dispatch(clearCart());
-        // window.location.href = res.data.paymentUrl;
-        if (res.data && res.data.paymentUrl) {
-          window.location.href = res.data.paymentUrl;
-        }
+
+        // console.log("Redirecting to:", res.data.data.paymentUrl);
+        window.location.href = res.data.paymentUrl;
+
       }
 
       if (!res.error) {
-        console.log(res.error);
         toast.error(res.message, { id: orderLoading });
       }
     } catch (error: any) {
-      console.log("payment details", error);
       toast.error(error.message, { id: orderLoading });
     }
   };

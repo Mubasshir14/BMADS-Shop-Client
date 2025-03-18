@@ -16,9 +16,11 @@ export const createOrder = async (order: IOrder) => {
     revalidateTag("ORDER");
     return await res.json();
   } catch (error: any) {
+    console.log(error.message);
     return Error(error);
   }
 };
+
 export const getOrder = async () => {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/order`, {

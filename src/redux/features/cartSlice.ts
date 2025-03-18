@@ -51,7 +51,6 @@ export const fetchCoupon = createAsyncThunk(
 
       return res;
     } catch (err: any) {
-      console.log(err);
       throw new Error(err.message);
     }
   }
