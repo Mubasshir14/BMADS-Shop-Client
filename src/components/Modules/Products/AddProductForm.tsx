@@ -40,7 +40,7 @@ export default function AddProductForm() {
       try {
         const { data: category } = await getAllCategories();
         setCategories(category);
-        console.log(category);
+        // console.log(category);
       } catch (err) {
         console.error("Failed to fetch category:", err);
       }

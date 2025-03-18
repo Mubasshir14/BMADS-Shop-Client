@@ -35,14 +35,14 @@ export default function RegisterForm() {
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
       const res = await registerUser(data);
-      console.log(res);
+      // console.log(res);
       setIsLoading(true);
       if (res?.success) {
         toast.success(res?.message);
         router.push("/");
       } else {
         toast.error(res?.message);
-        console.log(res?.message);
+        // console.log(res?.message);
       }
     } catch (err: any) {
       console.error(err);

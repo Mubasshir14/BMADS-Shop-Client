@@ -65,7 +65,7 @@ const AddCouponForm = () => {
       console.error(err.message);
     }
 
-    console.log(couponData);
+    // console.log(couponData);
   };
 
   return (

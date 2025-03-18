@@ -49,7 +49,7 @@ const UpdateCategoryForm = ({ category }: { category: any }) => {
       const modifiedData = {
         ...data,
       };
-      console.log("", modifiedData);
+      // console.log("", modifiedData);
       const formData = new FormData();
       formData.append("data", JSON.stringify(modifiedData));
       formData.append("icon", imageFiles[0] as File);

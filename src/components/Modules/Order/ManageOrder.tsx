@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
@@ -15,7 +16,7 @@ const ManageOrder = () => {
         setOrders(data);
       } catch (error: any) {
         toast.error("Failed to fetch orders");
-        console.log(error);
+        // console.log(error);
       }
     };
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
@@ -87,7 +88,7 @@ const ManageCategoryForm = () => {
           });
         }
       } catch (err) {
-        console.log(err);
+        // console.log(err);
       }
       setOpenModal(false);
     }

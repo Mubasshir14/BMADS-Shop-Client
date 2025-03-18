@@ -46,7 +46,7 @@ const UpdateProductForm = ({ product }: { product: any }) => {
   });
  
   useEffect(() => {
-    console.log(form.getValues()); // Logs the current default values
+    // console.log(form.getValues()); // Logs the current default values
   }, [form]);
   const {
     formState: { isSubmitting },

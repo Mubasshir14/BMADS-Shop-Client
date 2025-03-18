@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"; // Required if using Next.js App Router
 
@@ -45,7 +46,7 @@ const CouponTable = () => {
       toast.success("Coupon deleted successfully!");
     } catch (error: any) {
       toast.error("Failed to delete coupon.");
-      console.log(error);
+      // console.log(error);
     }
   };
 

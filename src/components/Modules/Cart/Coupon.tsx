@@ -26,7 +26,7 @@ export default function Coupon() {
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const toastId = "creating";
-    console.log({ couponCode: data.coupon, subTotal });
+    // console.log({ couponCode: data.coupon, subTotal });
     try {
       const res: any = await dispatch(
         fetchCoupon({ couponCode: data.coupon, subTotal }) as any
@@ -41,7 +41,7 @@ export default function Coupon() {
         });
       }
     } catch (error: any) {
-      console.log(error);
+      console.log('coupon', error);
       toast.error("Invalid Coupon Code", {
         id: toastId,
       });
