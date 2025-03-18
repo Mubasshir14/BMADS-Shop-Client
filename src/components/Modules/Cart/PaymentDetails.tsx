@@ -13,7 +13,6 @@ import {
   subTotalSelector,
 } from "@/redux/features/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { useRouter } from "next/navigation";
 import { ScaleLoader } from "react-spinners";
 import { toast } from "sonner";
 
@@ -26,7 +25,7 @@ export default function PaymentDetails() {
   const cartProducts = useAppSelector(orderedProductsSelector);
   const coupon = useAppSelector(couponSelector);
 
-  const router = useRouter();
+
 
   const dispatch = useAppDispatch();
 
@@ -44,10 +43,10 @@ export default function PaymentDetails() {
       let orderData;
 
       if (coupon.code) {
-        orderData = { ...order, email, coupon: coupon.code };
+        orderData = { ...order, email, coupon: coupon.code,  orderId: Math.random().toString(36).substring(6), };
         console.log(orderData);
       } else {
-        orderData = { ...order, email };
+        orderData = { ...order, email,  orderId: Math.random().toString(36).substring(7), };
       }
       console.log(orderData);
       const res = await createOrder(orderData as any);
@@ -56,8 +55,9 @@ export default function PaymentDetails() {
         toast.success(res.message, { id: orderLoading });
         dispatch(clearCart());
 
-        console.log("Redirecting to:", res.data.data.paymentUrl);
-        router.push(res.data.data.paymentUrl);
+        console.log("Redirecting to:", res.data.paymentUrl);
+        // router.push(res.data.paymentUrl);
+        window.location.href = res.data.paymentUrl;
 
       }
 
@@ -101,6 +101,7 @@ export default function PaymentDetails() {
       )}
       <Button
         onClick={handleOrder}
+        disabled={cartProducts.length === 0 || !email}
         className="w-full bg-blue-500 text-sm   font-semibold mb-2"
       >
         Order Now

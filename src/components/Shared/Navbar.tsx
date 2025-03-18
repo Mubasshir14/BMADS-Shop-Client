@@ -162,7 +162,7 @@ const Navigation = () => {
                     Telegram
                   </Button>
 
-                  <Link href="/login">
+                  <Link href="/login" >
                     <Button className="bg-gray-200 hover:bg-blue-50 text-blue-600 px-5 py-2.5 rounded-lg flex items-center shadow-md transition-all hover:shadow-lg font-medium">
                       <LuLogIn className="mr-2" />
                       Sign in

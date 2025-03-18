@@ -19,7 +19,7 @@ const SuccessPage = () => {
           </p>
 
           <Link href="/" legacyBehavior>
-            <Button>Continue Shopping</Button>
+            <Button variant={"outline"} className="text-blue-600 border-2 border-blue-600">Continue Shopping</Button>
           </Link>
         </div>
       </div>

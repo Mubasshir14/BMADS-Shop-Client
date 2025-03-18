@@ -19,6 +19,7 @@ export default function Email() {
       <div className="flex flex-col justify-between h-full">
         <div className="mt-2">
           <Input
+          type="email"
             className="border-blue-500"
             placeholder="Your Email"
             onChange={(e) => handleEmail(e.target.value)}
