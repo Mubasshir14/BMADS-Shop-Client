@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -159,7 +160,7 @@ const Footer = () => {
 
       {/* Support Button */}
       <div className="fixed bottom-4 left-4">
-        <button className="bg-blue-500 text-white px-4 py-2 rounded-full flex items-center">
+        <button onClick={() => window.open("https://t.me/fbadsx", "_blank")} className="bg-blue-500 text-white px-4 py-2 rounded-full flex items-center">
           <span className="mr-2">🔥</span>
           <span>Support</span>
         </button>
