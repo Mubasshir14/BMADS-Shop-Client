@@ -13,6 +13,11 @@ export const createOrder = async (order: IOrder) => {
       },
       body: JSON.stringify(order),
     });
+    if (!res.ok) {
+      const text = await res.text();
+      console.error("API Error Response:", text);
+      throw new Error(`API error: ${res.status} ${res.statusText}`);
+    }
     revalidateTag("ORDER");
     return await res.json();
   } catch (error: any) {

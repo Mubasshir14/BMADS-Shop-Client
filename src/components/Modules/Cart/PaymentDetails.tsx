@@ -1,5 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+
+import { useState } from "react";
 import { createOrder } from "@/components/services/Coupon";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,8 +16,10 @@ import {
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { ScaleLoader } from "react-spinners";
 import { toast } from "sonner";
+import { v4 as uuidv4 } from "uuid"; // Add this package for better ID generation
 
 export default function PaymentDetails() {
+  const [isProcessing, setIsProcessing] = useState(false);
   const subTotal = useAppSelector(subTotalSelector);
   const discountAmount = useAppSelector(discountAmountSelector);
   const grandTotal = useAppSelector(grandTotalSelector);
@@ -24,58 +27,52 @@ export default function PaymentDetails() {
   const email = useAppSelector(emailSelector);
   const cartProducts = useAppSelector(orderedProductsSelector);
   const coupon = useAppSelector(couponSelector);
-
-
   const dispatch = useAppDispatch();
 
   const handleOrder = async () => {
     const orderLoading = toast.loading("Order is being placed");
+    setIsProcessing(true);
+    
     try {
       if (!email) {
         throw new Error("Email is missing");
       }
-
-      if (cartProducts.length === 0) {
-        throw new Error("Cart is empty, what are you trying to order ??");
-      }
-
-      let orderData;
-
-      if (coupon.code) {
-       
-        orderData = {
-          ...order,
-          email,
-          coupon: coupon.code,
-          orderId: Math.random().toString(36).substring(6),
-        };
-        console.log(orderData);
-      } else {
       
-        orderData = {
-          ...order,
-          email,
-          orderId: Math.random().toString(36).substring(7),
-        };
+      if (cartProducts.length === 0) {
+        throw new Error("Cart is empty, what are you trying to order?");
       }
-      console.log(orderData);
-      console.log(orderData.products);
-      const res = await createOrder(orderData as any);
-      console.log('asdfgh', res);
+      
+      // Generate a more reliable order ID
+      const orderId = uuidv4().substring(0, 8);
+      
+      // Create order data
+      const orderData = { 
+        ...order, 
+        email, 
+        orderId,
+        ...(coupon.code ? { coupon: coupon.code } : {})
+      };
+      
+      // Make API call
+      const res = await createOrder(orderData);
+      
       if (res.success) {
         toast.success(res.message, { id: orderLoading });
         dispatch(clearCart());
-
-        // console.log("Redirecting to:", res.data.data.paymentUrl);
-        window.location.href = res.data.paymentUrl;
-
+        
+        // Add a small delay to ensure toast is visible before redirect
+        setTimeout(() => {
+          window.location.href = res.data.paymentUrl;
+        }, 300);
+      } else {
+        // Fixed error handling logic
+        toast.error(res.message || "Failed to create order", { id: orderLoading });
       }
-
-      if (!res.error) {
-        toast.error(res.message, { id: orderLoading });
-      }
-    } catch (error: any) {
-      toast.error(error.message, { id: orderLoading });
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+      toast.error(errorMessage, { id: orderLoading });
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -84,37 +81,38 @@ export default function PaymentDetails() {
       <h1 className="text-lg font-bold text-blue-500 uppercase">
         Payment Details
       </h1>
-      {coupon.isLoading && (
+      
+      {coupon.isLoading ? (
         <div className="flex items-center justify-center">
           <ScaleLoader color="#4ADABD" />
         </div>
-      )}
-      {!coupon.isLoading && (
+      ) : (
         <>
-          <div className="space-y-2 ">
+          <div className="space-y-2">
             <div className="flex justify-between">
               <p className="text-gray-500 text-sm">Subtotal</p>
-              <p className="font-semibold text-sm">{subTotal.toFixed(2)}</p>
+              <p className="font-semibold text-sm">${subTotal.toFixed(2)}</p>
             </div>
             <div className="flex justify-between">
               <p className="text-gray-500 text-sm">Discount</p>
               <p className="font-semibold text-sm">
-                {discountAmount.toFixed(2)}
+                ${discountAmount.toFixed(2)}
               </p>
             </div>
           </div>
           <div className="flex justify-between mb-5">
             <p className="text-gray-500 text-sm">Grand Total</p>
-            <p className="font-semibold text-sm">{grandTotal.toFixed(2)}</p>
+            <p className="font-semibold text-sm">${grandTotal.toFixed(2)}</p>
           </div>
         </>
       )}
+      
       <Button
         onClick={handleOrder}
-        disabled={cartProducts.length === 0 || !email}
-        className="w-full bg-blue-500 text-sm   font-semibold mb-2"
+        disabled={cartProducts.length === 0 || !email || isProcessing}
+        className="w-full bg-blue-500 text-sm font-semibold mb-2"
       >
-        Order Now
+        {isProcessing ? "Processing..." : "Order Now"}
       </Button>
     </div>
   );
